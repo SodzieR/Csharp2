@@ -1,0 +1,54 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+
+namespace cw3
+{
+    struct Samochod
+    {
+        public string cena;
+        public string rocznik;
+        public string przebieg;
+        public string marka;
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            StreamReader samochody_txt = new StreamReader(@"D:/Studenci/Biostatystyka 2/Adrian Janucik/cw2/samochody.txt");
+            string n_aut = samochody_txt.ReadLine();
+            string[] length_n_aut = n_aut.Split(' ');
+            int n = Convert.ToInt32(length_n_aut[0]);
+            string[] cena = new string[n];
+            string[] rocznik = new string[n];
+            string[] przebieg = new string[n];
+            string[] marka = new string[n];
+            int i = 0;
+            do
+            {
+                string input_line = samochody_txt.ReadLine();
+                cena[i] = input_line;
+                input_line = samochody_txt.ReadLine();
+                rocznik[i] = input_line;
+                input_line = samochody_txt.ReadLine();
+                przebieg[i] = input_line;
+                input_line = samochody_txt.ReadLine();
+                marka[i] = input_line;
+                i++;
+            } while (!samochody_txt.EndOfStream);
+            for(int j = 0; j < n; j++)
+            {
+                Console.WriteLine("Informacje o {0} samochodzie", j + 1);
+                Console.WriteLine(cena[j]);
+                Console.WriteLine(rocznik[j]);
+                Console.WriteLine(przebieg[j]);
+                Console.WriteLine(marka[j]);
+            }
+            Console.ReadKey();
+        }
+    }
+}
