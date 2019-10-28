@@ -7,47 +7,49 @@ using System.IO;
 
 namespace cw3
 {
-    struct Samochod
-    {
-        public string cena;
-        public string rocznik;
-        public string przebieg;
-        public string marka;
-    }
 
     class Program
     {
+        public struct Samochod
+        {
+            public string cena;
+            public string rocznik;
+            public string przebieg;
+            public string marka;
+        }
+        static void Wczytaj(StreamReader plik, ref Samochod parametr)
+        {
+                string input_line = plik.ReadLine();
+                parametr.cena = input_line;
+                input_line = plik.ReadLine();
+                parametr.rocznik = input_line;
+                input_line = plik.ReadLine();
+                parametr.przebieg = input_line;
+                input_line = plik.ReadLine();
+                parametr.marka = input_line;
+        }
+        static void Wypisz(Samochod[] parametr2, int liczba_aut)
+        {
+            for (int a = 0; a < liczba_aut; a++)
+            {
+                Console.WriteLine(parametr2[a].cena);
+                Console.WriteLine(parametr2[a].rocznik);
+                Console.WriteLine(parametr2[a].przebieg);
+                Console.WriteLine(parametr2[a].marka);
+            }
+        }
         static void Main(string[] args)
         {
-            StreamReader samochody_txt = new StreamReader(@"D:/Studenci/Biostatystyka 2/Adrian Janucik/cw2/samochody.txt");
+            StreamReader samochody_txt = new StreamReader(@"D:/csharp/cw3/samochody.txt");
             string n_aut = samochody_txt.ReadLine();
             string[] length_n_aut = n_aut.Split(' ');
             int n = Convert.ToInt32(length_n_aut[0]);
-            string[] cena = new string[n];
-            string[] rocznik = new string[n];
-            string[] przebieg = new string[n];
-            string[] marka = new string[n];
-            int i = 0;
-            do
+            Samochod[] samochody = new Samochod[n];
+            for (int j = 0; j < n; j++)
             {
-                string input_line = samochody_txt.ReadLine();
-                cena[i] = input_line;
-                input_line = samochody_txt.ReadLine();
-                rocznik[i] = input_line;
-                input_line = samochody_txt.ReadLine();
-                przebieg[i] = input_line;
-                input_line = samochody_txt.ReadLine();
-                marka[i] = input_line;
-                i++;
-            } while (!samochody_txt.EndOfStream);
-            for(int j = 0; j < n; j++)
-            {
-                Console.WriteLine("Informacje o {0} samochodzie", j + 1);
-                Console.WriteLine(cena[j]);
-                Console.WriteLine(rocznik[j]);
-                Console.WriteLine(przebieg[j]);
-                Console.WriteLine(marka[j]);
+                Wczytaj(samochody_txt, ref samochody[j]);
             }
+            Wypisz(samochody, n);
             Console.ReadKey();
         }
     }
