@@ -17,39 +17,41 @@ namespace cw3
             public string przebieg;
             public string marka;
         }
-        static void Wczytaj(StreamReader plik, ref Samochod parametr)
+        static void Wczytaj_plik(out int n, out StreamReader samochody_txt, out Samochod[] samochod, string sciezka)
         {
-                string input_line = plik.ReadLine();
-                parametr.cena = input_line;
-                input_line = plik.ReadLine();
-                parametr.rocznik = input_line;
-                input_line = plik.ReadLine();
-                parametr.przebieg = input_line;
-                input_line = plik.ReadLine();
-                parametr.marka = input_line;
+            samochody_txt = new StreamReader(sciezka);
+            string n_aut = samochody_txt.ReadLine();
+            string[] length_n_aut = n_aut.Split(' ');
+            n = Convert.ToInt32(length_n_aut[0]);
+            samochod = new Samochod[n];
+            for (int j = 0; j < n; j++)
+            {
+                string input_line = samochody_txt.ReadLine();
+                samochod[j].cena = input_line;
+                input_line = samochody_txt.ReadLine();
+                samochod[j].rocznik = input_line;
+                input_line = samochody_txt.ReadLine();
+                samochod[j].przebieg = input_line;
+                input_line = samochody_txt.ReadLine();
+                samochod[j].marka = input_line;
+            }
+
         }
         static void Wypisz(Samochod[] parametr2, int liczba_aut)
         {
-            for (int a = 0; a < liczba_aut; a++)
-            {
-                Console.WriteLine(parametr2[a].cena);
-                Console.WriteLine(parametr2[a].rocznik);
-                Console.WriteLine(parametr2[a].przebieg);
-                Console.WriteLine(parametr2[a].marka);
-            }
+                for (int a = 0; a < liczba_aut; a++)
+                {
+                    Console.WriteLine(parametr2[a].cena);
+                    Console.WriteLine(parametr2[a].rocznik);
+                    Console.WriteLine(parametr2[a].przebieg);
+                    Console.WriteLine(parametr2[a].marka);
+                }
         }
         static void Main(string[] args)
         {
-            StreamReader samochody_txt = new StreamReader(@"D:/csharp/cw3/samochody.txt");
-            string n_aut = samochody_txt.ReadLine();
-            string[] length_n_aut = n_aut.Split(' ');
-            int n = Convert.ToInt32(length_n_aut[0]);
-            Samochod[] samochody = new Samochod[n];
-            for (int j = 0; j < n; j++)
-            {
-                Wczytaj(samochody_txt, ref samochody[j]);
-            }
-            Wypisz(samochody, n);
+            string patch = @"D:/Studenci/Biostatystyka 2/Adrian Janucik/cw2/samochody.txt";
+            Wczytaj_plik(out int n_pofunkcji, out StreamReader plik2, out Samochod[] samochod2, patch);
+            Wypisz(samochod2, n_pofunkcji);
             Console.ReadKey();
         }
     }
