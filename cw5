@@ -1,0 +1,104 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+
+namespace cw4
+{
+    class Program
+    {
+        public struct Samochod
+        {
+            public string cena;
+            public string rocznik;
+            public int przebieg;
+            public string marka;
+        }
+        static void Wczytaj_plik(out int n, out StreamReader samochody_txt, out Samochod[] samochod, string sciezka)
+        {
+            samochody_txt = new StreamReader(sciezka);
+            string n_aut = samochody_txt.ReadLine();
+            string[] length_n_aut = n_aut.Split(' ');
+            n = Convert.ToInt32(length_n_aut[0]);
+            samochod = new Samochod[n];
+            for (int j = 0; j < n; j++)
+            {
+                string input_line = samochody_txt.ReadLine();
+                samochod[j].cena = input_line;
+                input_line = samochody_txt.ReadLine();
+                samochod[j].rocznik = input_line;
+                input_line = samochody_txt.ReadLine();
+                samochod[j].przebieg = Convert.ToInt16(input_line);
+                input_line = samochody_txt.ReadLine();
+                samochod[j].marka = input_line;
+            }
+
+        }
+        static void Wypisz(Samochod[] parametr2, int liczba_aut)
+        {
+            for (int a = 0; a < liczba_aut; a++)
+            {
+                Console.WriteLine(parametr2[a].cena);
+                Console.WriteLine(parametr2[a].rocznik);
+                Console.WriteLine(parametr2[a].przebieg);
+                Console.WriteLine(parametr2[a].marka);
+            }
+        }
+        static void Zamiana(ref Samochod s1, ref Samochod s2)
+        {
+            var pointer1 = s1.cena;
+            var pointer2 = s2.cena;
+            s1.cena = pointer2;
+            s2.cena = pointer1;
+            s1.rocznik = pointer2;
+            s2.rocznik = pointer1;
+            int i_pointer1 = s1.przebieg;
+            int i_pointer2 = s2.przebieg;
+            s1.przebieg = i_pointer2;
+            s2.przebieg = i_pointer1;
+            pointer1 = s1.marka;
+            pointer2 = s2.marka;
+            s1.marka = pointer2;
+            s2.marka = pointer1;
+        }
+        static void Sort(ref Samochod[] samochody, ref int liczba_aut)
+        {
+            bool flag = true;
+            int temp;
+            var numLength = samochody.Length;
+            //sorting an array  
+            for (int i = 1; (i <= (numLength - 1)) && flag; i++)
+            {
+                flag = false;
+                for (int j = 0; j < (numLength - 1); j++)
+                {
+                    if (Convert.ToInt16(samochody[j+1].przebieg) > Convert.ToInt16(samochody[j].przebieg))
+                    {
+                        temp = Convert.ToInt16(samochody[j].przebieg);
+                        samochody[j].przebieg = samochody[j+1].przebieg;
+                        samochody[j+1].przebieg = temp;
+                        flag = true;
+                    }
+                }
+            }
+            foreach (var num in samochody)
+            {
+                Console.Write("\t {0}", num);
+            }
+
+        }
+        static void Main(string[] args)
+        {
+            string patch = @"D:/Studenci/Biostatystyka 2/Adrian Janucik/cw2/samochody.txt";
+            Wczytaj_plik(out int n_pofunkcji, out StreamReader plik2, out Samochod[] samochod2, patch);
+            Wypisz(samochod2, n_pofunkcji);
+            Zamiana(ref samochod2[0], ref samochod2[1]);
+            Console.WriteLine("\nPo zamianie tabela wygląda następująco:\n");
+            Wypisz(samochod2, n_pofunkcji);
+            Console.ReadKey();
+            Sort(ref samochod2, ref n_pofunkcji);
+        }
+    }
+}
