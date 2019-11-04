@@ -7,6 +7,7 @@ using System.IO;
 
 namespace cw4
 {
+
     class Program
     {
         public struct Samochod
@@ -52,6 +53,8 @@ namespace cw4
             var pointer2 = s2.cena;
             s1.cena = pointer2;
             s2.cena = pointer1;
+            pointer1 = s1.rocznik;
+            pointer2 = s2.rocznik;
             s1.rocznik = pointer2;
             s2.rocznik = pointer1;
             int i_pointer1 = s1.przebieg;
@@ -63,42 +66,36 @@ namespace cw4
             s1.marka = pointer2;
             s2.marka = pointer1;
         }
-        static void Sort(ref Samochod[] samochody, ref int liczba_aut)
+        static void Bubble(ref Samochod[] table_name)
         {
-            bool flag = true;
-            int temp;
-            var numLength = samochody.Length;
-            //sorting an array  
-            for (int i = 1; (i <= (numLength - 1)) && flag; i++)
+            int l = table_name.Length;
+            bool test;
+            do
             {
-                flag = false;
-                for (int j = 0; j < (numLength - 1); j++)
+                test = false;
+                for (int k = 0; k < l - 1; k++)
                 {
-                    if (Convert.ToInt16(samochody[j+1].przebieg) > Convert.ToInt16(samochody[j].przebieg))
+                    if (table_name[k].przebieg > table_name[k + 1].przebieg)
                     {
-                        temp = Convert.ToInt16(samochody[j].przebieg);
-                        samochody[j].przebieg = samochody[j+1].przebieg;
-                        samochody[j+1].przebieg = temp;
-                        flag = true;
+                        Zamiana(ref table_name[k], ref table_name[k + 1]);
+                        test = true;
                     }
-                }
-            }
-            foreach (var num in samochody)
-            {
-                Console.Write("\t {0}", num);
-            }
 
+                }
+            } while (test);
         }
         static void Main(string[] args)
         {
-            string patch = @"D:/Studenci/Biostatystyka 2/Adrian Janucik/cw2/samochody.txt";
+            string patch = @"D:/csharp/cw3/samochody.txt";
             Wczytaj_plik(out int n_pofunkcji, out StreamReader plik2, out Samochod[] samochod2, patch);
             Wypisz(samochod2, n_pofunkcji);
             Zamiana(ref samochod2[0], ref samochod2[1]);
             Console.WriteLine("\nPo zamianie tabela wygląda następująco:\n");
             Wypisz(samochod2, n_pofunkcji);
+            Bubble(ref samochod2);
+            Console.WriteLine("\nPo zastosowaniu sortowania bąbelkowego tablica wygląda następująco:\n");
+            Wypisz(samochod2, n_pofunkcji);
             Console.ReadKey();
-            Sort(ref samochod2, ref n_pofunkcji);
         }
     }
 }
