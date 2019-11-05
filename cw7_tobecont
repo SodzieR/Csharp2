@@ -1,0 +1,146 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+
+namespace cw6
+{
+    public struct Samochod
+    {
+        public double Cena;
+        public int Rocznik;
+        public double Przebieg;
+        public string Marka;
+        private void Wczytaj_Cene()
+        {
+            Console.Write("Podaj cenę samochodu: ");
+            do
+            {
+                Cena = Convert.ToDouble(Console.ReadLine());
+                if (Cena < 0) Console.WriteLine("Cena nie może być ujemna. Podaj poprawną wartość: ");
+            } while (Cena < 0);
+        }
+        private void Wczytaj_Przebieg()
+        {
+            Console.Write("Podaj przebieg: ");
+            do
+            {
+                Przebieg = Convert.ToDouble(Console.ReadLine());
+                if (Przebieg < 0) Console.WriteLine("Przebieg nie może być ujemny. Podaj poprawną wartość: ");
+            } while (Przebieg < 0);
+        }
+
+        private void Wczytaj_Rocznik()
+        {
+            Console.Write("Podaj rocznik: ");
+            do
+            {
+                Rocznik = Convert.ToInt32(Console.ReadLine());
+                if (Rocznik < 0) Console.WriteLine("Rocznik nie może być ujemny ani ułamkiem. Podaj poprawną wartość: ");
+            } while (Rocznik < 0 || (int)Rocznik != Rocznik);
+        }
+
+        private void Wczytaj_Marke()
+        {
+            Console.Write("Podaj marke samochodu: ");
+            do
+            {
+                Marka = Console.ReadLine();
+                if (!Marka.All(Char.IsLetter)) Console.WriteLine("Marka nie może zawierać cyfr. Podaj poprawną wartość: ");
+            } while (!Marka.All(Char.IsLetter));
+        }
+        public void Wczytaj_Samochod()
+        {
+
+            Wczytaj_Marke();
+            Wczytaj_Przebieg();
+            Wczytaj_Cene();
+            Wczytaj_Rocznik();
+        }
+        public void Wypisz_Samochod()
+        {
+            Console.WriteLine("Marka: {0}", this.Marka); //"z tego obiektu weź cenę"
+            Console.WriteLine("Przebieg: {0}", this.Przebieg);
+            Console.WriteLine("Cena: {0}", this.Cena);
+            Console.WriteLine("Rocznik: {0}", this.Rocznik);
+        }
+        public void PokazSamochod()
+        {
+            Console.WriteLine("{0,-15} {1,10}", Cena, Rocznik, Przebieg, Marka);
+        }
+    };
+    public struct Samochody
+    {
+        public Samochod[] tablica;
+        public int N;
+        public void Samochody_Zpliku(string nazwa_pliku)
+        {
+            StreamReader Plik = new StreamReader(nazwa_pliku);
+            N = Convert.ToInt32(Plik.ReadLine());
+            tablica = new Samochod[N];
+            for (int i = 0; i < N; i++)
+            {
+                tablica[i].Cena = Convert.ToDouble(Plik.ReadLine());
+                tablica[i].Rocznik = Convert.ToInt32(Plik.ReadLine());
+                tablica[i].Przebieg = Convert.ToInt32(Plik.ReadLine());
+                tablica[i].Marka = Plik.ReadLine();
+            }
+        }
+        public void Wypisz_Samochody()
+        {
+            for (int i = 0; i < N; i++)
+            {
+                Console.WriteLine("Samochód nr {0}", i + 1);
+                tablica[i].Wypisz_Samochod();
+            }
+        }
+        public void Zapisz(string plik)
+        {
+            StreamWriter Plik = new StreamWriter(plik, false);
+            Plik.WriteLine(N);
+            for (int licz = 0; licz < N; licz++)
+            {
+                Plik.WriteLine(tablica[licz].Cena);
+                Plik.WriteLine(tablica[licz].Rocznik);
+                Plik.WriteLine(tablica[licz].Przebieg);
+                Plik.WriteLine(tablica[licz].Marka);
+            }
+            Plik.Close();
+        }
+        public static void Zamien(ref Samochod s1, ref Samochod s2)
+        {
+            Samochod tmp;
+            tmp = s1;
+            s1 = s2;
+            s2 = s1;
+        }
+        public void sortuj()
+        {
+            bool zamiana = false;
+            do
+            {
+                for (int licz = 0; licz < N - 1; licz++)
+                    if (tablica[licz].Przebieg > tablica[licz + 1].Przebieg)
+                    {
+                        Zamien(ref tablica[licz], ref tablica[licz + 1]);
+                        zamiana = true;
+                    }
+            }
+            while (zamiana);
+        }
+    }
+    class Program
+    {
+        
+        static void Main(string[] args)
+        {
+            Samochod[] Samochody;
+            int N = Samochody_Zpliku(@"D:/Studenci/Biostatystyka 2/Adrian Janucik/samochody.txt");
+            sortuj(ref Samochody, N);
+            Wypisz_Samochody(Samochody, N);
+            Console.ReadKey();
+        }
+    }
+}
