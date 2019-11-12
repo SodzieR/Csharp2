@@ -130,7 +130,7 @@ namespace cw6
                     if (tablica[licz].Przebieg > tablica[licz + 1].Przebieg)
                     {
                         Zamien(ref tablica[licz], ref tablica[licz + 1]);
-                        zamiana = true;
+                        zamiana = false;
                     }
             }
             while (zamiana);
