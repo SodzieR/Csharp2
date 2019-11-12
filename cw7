@@ -39,7 +39,7 @@ namespace cw6
             {
                 Rocznik = Convert.ToInt32(Console.ReadLine());
                 if (Rocznik < 0) Console.WriteLine("Rocznik nie może być ujemny ani ułamkiem. Podaj poprawną wartość: ");
-            } while (Rocznik < 0 || (int)Rocznik != Rocznik);
+            } while (Rocznik < 0 );
         }
 
         private void Wczytaj_Marke()
@@ -75,11 +75,16 @@ namespace cw6
     {
         public Samochod[] tablica;
         public int N;
+        public Samochody(int ilosc)
+        {
+            tablica = new Samochod[ilosc];
+            N = ilosc;
+        }
         public void Samochody_Zpliku(string nazwa_pliku)
         {
             StreamReader Plik = new StreamReader(nazwa_pliku);
             N = Convert.ToInt32(Plik.ReadLine());
-            tablica = new Samochod[N];
+           // tablica = new Samochod[N];
             for (int i = 0; i < N; i++)
             {
                 tablica[i].Cena = Convert.ToDouble(Plik.ReadLine());
@@ -96,9 +101,9 @@ namespace cw6
                 tablica[i].Wypisz_Samochod();
             }
         }
-        public void Zapisz(string plik)
+        public void Zapisz(string nazwa_pliku)
         {
-            StreamWriter Plik = new StreamWriter(plik, false);
+            StreamWriter Plik = new StreamWriter(nazwa_pliku, false);
             Plik.WriteLine(N);
             for (int licz = 0; licz < N; licz++)
             {
@@ -116,7 +121,7 @@ namespace cw6
             s1 = s2;
             s2 = s1;
         }
-        public void sortuj()
+        public void Sortuj()
         {
             bool zamiana = false;
             do
@@ -133,13 +138,20 @@ namespace cw6
     }
     class Program
     {
-        
         static void Main(string[] args)
         {
-            Samochod[] Samochody;
-            int N = Samochody_Zpliku(@"D:/Studenci/Biostatystyka 2/Adrian Janucik/samochody.txt");
-            sortuj(ref Samochody, N);
-            Wypisz_Samochody(Samochody, N);
+
+            Samochody Tab_Samochody = new Samochody(1000);
+
+           /* Console.Write("Podaj ilość samochodów: ");
+            int N = Convert.ToInt32(Console.ReadLine());
+            for (int licz = 0; licz < N; licz++)
+                Tab_Samochody.tablica[licz].Wczytaj_Samochod();
+            Tab_Samochody.Zapisz(@"D:/Studenci/Biostatystyka 2/Adrian Janucik/samochody.txt"); */
+
+            Tab_Samochody.Samochody_Zpliku(@"D:/Studenci/Biostatystyka 2/Adrian Janucik/samochody.txt");
+            Tab_Samochody.Sortuj();
+            Tab_Samochody.Wypisz_Samochody();
             Console.ReadKey();
         }
     }
