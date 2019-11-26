@@ -1,0 +1,52 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace cw9
+{
+    class Program
+    {
+        public class Prostokat
+        {
+            private double dlugosc;
+            private double szerokosc;
+            public Prostokat(double dl, double sz)
+            {
+                dlugosc = dl;
+                szerokosc = sz;
+            }
+            private double Powierzchnia()
+            {
+                return dlugosc * szerokosc;
+            }
+            private double Obwod()
+            {
+                return 2 * dlugosc + 2 * szerokosc;
+            }
+            public string Prezentuj()
+            {
+                return "Obwod: " + Obwod() + ", Powierzchnia: " + Powierzchnia();
+
+            }
+        }
+        static void Main(string[] args)
+        {
+            Prostokat[] prostokaty = {
+            new Prostokat(1, 2),
+            new Prostokat(3, 4),
+            new Prostokat(5, 6),
+            new Prostokat(7, 8),
+            new Prostokat(9, 10),
+            new Prostokat(11, 12),
+            new Prostokat(13, 14),
+        };
+            foreach(Prostokat p in prostokaty)
+            {
+                Console.WriteLine(p.Prezentuj());
+            }
+            Console.ReadKey();
+        }
+    }
+}
